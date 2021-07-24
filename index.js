@@ -857,8 +857,14 @@ window.onload = function () {
   mapTileData.buildMapFromData(gameMap, mapW, mapH);
   //mapTileData.addRoofs(roofList);
   // height * mapW + width
-  mapTileData.map[2 * mapW + 2].eventEnter = function () {
-    console.log("Entered tile 2,2");
+  mapTileData.map[4 * mapW + 2].eventEnter = function () {
+    var answer = getQuestion123();
+    var button = document.getElementById("submit");
+    if (button.checked) {
+      checkAnswers(answer);
+    } else {
+      console.log("invalid");
+    }
     bossActivation = true;
     sub = new Subject();
     boss = new Boss();
@@ -901,6 +907,49 @@ window.onload = function () {
   //   ps.placeAt(3, i);
   // }
 };
+
+var MathQn = [
+  "Given that sin x+sin y=a and cos x+cos y=a, where a=/= 0, express sin x+cos x in terms of a.",
+  "Jess needs 200 pieces of ribbons, each of length 110 cm, to decorate a room for a party. Ribbon is sold in rolls of 25m each. What is the least number of rolls of ribbons Jess needs to buy?",
+  "How many ways are there for four people A,B,C and D to form a queue if B must stand directly in front of A",
+];
+var MathOption = [
+  ["a = tan x", "a = sin x + cos x", "a = sin x cos x", "a = cot x"],
+  ["8 rolls", "9 rolls", "10 rolls", "11 rolls"],
+  ["12", "6", "9", "5"],
+];
+var MathAns = [2, 3, 2];
+var MathQA = [MathQn, MathOption, MathAns];
+var SubjectArr = [MathQA, MathQA, MathQA];
+
+function getQuestion123() {
+  var i = Math.floor(Math.random() * SubjectArr.length);
+  var j = Math.floor(Math.random() * SubjectArr[i][0].length);
+  //console.log(SubjectArr[i]);
+  document.getElementById("question").innerHTML = SubjectArr[i][0][j];
+  for (var q = 0; q < SubjectArr[i][1].length; q++) {
+    for (var p = 0; p < SubjectArr[i][1][j].length; p++) {
+      var input = document.querySelectorAll(
+        'label[class="custom-control-label"]'
+      );
+      input[p].innerHTML = SubjectArr[i][1][j][p];
+    }
+  }
+  answer = SubjectArr[i][2][j];
+  return answer;
+}
+
+function checkAnswers(answer) {
+  var radio = document.querySelectorAll('input[type="radio"]');
+  console.log(radio);
+  for (var i = 0; i < radio.length; i++) {
+    if (radio[i].checked == true) {
+      console.log("Hi");
+    } else {
+      console.log("o");
+    }
+  }
+}
 
 function drawGame() {
   if (ctx == null) {
